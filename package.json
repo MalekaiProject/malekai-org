@@ -1,0 +1,30 @@
+{
+  "name": "malekaiOrgV2",
+  "version": "1.0.0",
+  "description": "The Premier Crowfall Destination",
+  "author": "Scree",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --port 5501",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "precommit": "npm run lint"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.9.7",
+    "@nuxtjs/google-analytics": "^2.2.3",
+    "nuxt": "^2.12.2",
+    "@nuxtjs/vuetify": "^1.11.0",
+    "core-js": "^2.0.0",
+    "@nuxtjs/tailwindcss": "^1.0.0"
+  },
+  "devDependencies": {
+    "@teamnovu/nuxt-breaky": "^1.2.1",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  }
+}

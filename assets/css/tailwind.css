@@ -1,0 +1,40 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+* {
+  transition: all 0.6s ease-out;
+}
+
+.grayscale {
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  opacity: 0.6;
+  transition: all 1.5s ease;
+}
+
+.grayscale:hover {
+  -webkit-filter: grayscale(0%);
+  filter: grayscale(0%);
+  font-color: #000;
+  opacity: 1;
+  transition: all 1.5s ease;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 2px #000000;
+}
+
+.dropshadow {
+  -webkit-filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0px 10px 7px rgba(0, 0, 0, 0.3));
+}
+
+.dropshadow-dark {
+  -webkit-filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.4));
+}
+
+.filter-th {
+  @apply pb-4 mb-4;
+}

@@ -1,0 +1,43 @@
+.v-data-table__wrapper {
+  overflow-x: hidden !important;
+  overflow-y: hidden;
+}
+
+.theme--light.v-data-table tbody tr:not(:last-child) td:last-child,
+.theme--light.v-data-table tbody tr:not(:last-child) th:last-child {
+  border-bottom: none !important;
+}
+
+.theme--light.v-data-table
+  tbody
+  tr:not(:last-child)
+  td:not(.v-data-table__mobile-row),
+.theme--light.v-data-table
+  tbody
+  tr:not(:last-child)
+  th:not(.v-data-table__mobile-row) {
+  border-bottom: none !important;
+}
+
+.v-data-footer__select {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.theme--light.v-label {
+  color: inherit !important;
+}
+
+.theme--light.v-input,
+.theme--light.v-input input,
+.theme--light.v-input textarea {
+  color: inherit !important;
+}
+
+.theme--light.v-icon,
+.theme--light.v-input {
+  color: inherit !important;
+}
+.v-data-table td {
+  height: auto !important;
+}
