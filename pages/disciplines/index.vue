@@ -12,7 +12,7 @@
               style="background-image: url('/images/headers-stoneborn.webp')"
               class="h-40 w-full flex flex-auto items-end justify-end font-bold uppercase text-white text-shadow bg-cover rounded-t px-3 mb-2"
             >
-              <div class="w-3/5 p-0 m-0 mb-2">Disciplines Overview</div>
+              <div class="w-3/5 p-0 m-0 mb-2">Crowfall Disciplines</div>
               <div
                 class="w-2/5 p-0 m-0 align-right text-gray-300 placeholder-gray-400"
               >
@@ -106,7 +106,7 @@
         <!--End Full Section -->
       </div>
     </div>
-    <MalekaiFooter :articles="crowfallArticles" />
+    <MalekaiFooter />
   </div>
 </template>
 
@@ -120,13 +120,6 @@ export default {
     MalekaiHeader
   },
   async asyncData({ app, error }) {
-    // official crowfall articles, used in footer
-    const articlesData = await app.$axios.get(
-      'https://api.malekai.org/news?limit=3'
-    )
-    if (!articlesData)
-      error({ statusCode: 404, message: 'articlesData: API Error' })
-
     // malekai generated changelog entries, used in'project malekai changelog'
     const disciplineData = await app.$axios.get(
       'https://api.malekai.org/disciplines?all=yes'
@@ -169,7 +162,6 @@ export default {
 
     return {
       search: '',
-      crowfallArticles: articlesData.data.results,
       disciplineData: disciplineData.data.results,
       dataCols: [
         {
@@ -217,7 +209,7 @@ export default {
     }
   },
   head: {
-    title: 'Disciplines'
+    title: 'Crowfall Disciplines'
   }
 }
 </script>

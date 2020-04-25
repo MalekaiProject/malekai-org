@@ -4,19 +4,138 @@
     <div id="malekaiContent" class="container md:px-0 mx-auto order-last">
       <div class="flex flex-wrap justify-between pt-1">
         <!--Full Section -->
-        <div class="w-full p-6 flex flex-col flex-grow flex-shrink">
+        <div class="w-full p-3 flex flex-col flex-grow flex-shrink">
           <div
-            class="flex-1 bg-white rounded overflow-hidden shadow-lg bg-cover bg-no-repeat bg-bottom border-gray-300 border-solid border-2"
+            class="flex-1 bg-white rounded overflow-hidden shadow-lg bg-cover bg-no-repeat bg-bottom border-gray-300 border-solid border-2 relative"
           >
-            <div class="px-6 py-4 w-full">
-              Coming Soon
+            <div
+              style="background-image: url('/images/headers-stoneborn.webp')"
+              class="h-40 w-full flex flex-auto items-end justify-end font-bold uppercase text-white text-shadow bg-cover rounded-t px-3 mb-2"
+            >
+              <div class="w-3/5 p-0 m-0 mb-2">Crowfall Powers</div>
+              <div
+                class="w-2/5 p-0 m-0 align-right text-gray-300 placeholder-gray-400"
+              >
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                  class="ml-10 mb-2"
+                  id="search"
+                ></v-text-field>
+              </div>
+            </div>
+            <div class="px-6 py-1 w-full">
+              <v-data-table
+                :headers="dataCols"
+                :items="dataRows"
+                :items-per-page="100"
+                loading
+                :search="search"
+                class="bg-transparent"
+              >
+                <template v-slot:body="{ items }">
+                  <tbody class="w-full">
+                    <tr v-for="item in items" class="">
+                      <td class="py-2 px-1 align-top w-16">
+                        <nuxt-link
+                          :to="`/powers/${item.id}`"
+                          class="text-red-700 font-bold text-sm"
+                        >
+                          <img :src="`${item.icon}`" class="h-auto w-12 mt-1" />
+                        </nuxt-link>
+                      </td>
+                      <td class="p-1 align-text-top">
+                        <nuxt-link :to="`/powers/${item.id}`">
+                          <span class="block font-medium mb-2">{{
+                            item.name
+                          }}</span>
+                          <span class="block flex flex-wrap justify-start mb-2">
+                            <span
+                              v-if="item.stats.cast_time"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-casttime.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.cast_time }}
+                            </span>
+                            <span
+                              v-if="item.stats.cooldown"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-cooldown.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.cooldown }}
+                            </span>
+
+                            <span
+                              v-if="item.stats.duration"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-duration.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.duration }}
+                            </span>
+                            <span
+                              v-if="item.stats.max_targets"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-maxtargets.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.max_targets }}
+                            </span>
+                            <span
+                              v-if="item.stats.range"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-range.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.range }}
+                            </span>
+                            <span
+                              v-if="item.stats.target"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-targetingtype.png"
+                                class="h-4 inline -mt-1"
+                              />
+                              {{ item.stats.target }}
+                            </span>
+                          </span>
+                          <span
+                            v-if="item.description"
+                            class="block italic text-xs mb-1"
+                          >
+                            {{ item.name }} {{ item.description }}
+                          </span>
+                        </nuxt-link>
+                      </td>
+                      <td class="w-0 m-0 p-0"></td>
+                      <td class="w-0 m-0 p-0"></td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-data-table>
             </div>
           </div>
         </div>
         <!--End Full Section -->
       </div>
     </div>
-    <MalekaiFooter :articles="crowfallArticles" />
+    <MalekaiFooter />
   </div>
 </template>
 
@@ -30,77 +149,90 @@ export default {
     MalekaiHeader
   },
   async asyncData({ app, error }) {
-    // official crowfall articles, used in footer
-    const articlesData = await app.$axios.get(
-      'https://api.malekai.org/news?limit=3'
-    )
-    if (!articlesData)
-      error({ statusCode: 404, message: 'articlesData: API Error' })
-
     // malekai generated changelog entries, used in'project malekai changelog'
-    const disciplineData = await app.$axios.get(
-      'https://api.malekai.org/disciplines?all=yes'
+    const powerData = await app.$axios.get(
+      'https://api.malekai.org/powers?all=yes'
     )
-    if (!disciplineData)
-      error({ statusCode: 404, message: 'disciplineData: API Error' })
+    if (!powerData) error({ statusCode: 404, message: 'powerData: API Error' })
 
     // used to construct changelog table
-    const dRows = []
-    for (const discipline of disciplineData.data.results) {
-      dRows.push({
-        id: discipline.id,
-        icon: `<a href="https://malekai.org/${discipline.data_type}/${discipline.type}/${discipline.id}"><img src="${discipline.icon}" class="w-full"></a>`,
-        name: `<span class="block text-base">${discipline.name}</span><span class="block text-xs text-gray-600">${discipline.description}</span>`,
-        powers: buildPowerIconList(discipline.grantsPowers),
-        type: `<span class="capitalize">${discipline.type}</span>`,
-        trait: `${discipline.trait}`
-      })
-    }
+    const rowData = []
 
-    function buildPowerIconList(powers) {
-      const iconList = []
-      for (const p of powers) {
-        const icon = `<img src="https://cdn.malekai.network/images/powers/${p.id}.png" class="w-8 inline-block">`
-        iconList.push(icon)
+    for (const power of powerData.data.results) {
+      power.description = power.description
+        ? power.description.replace(/(\r\n|\\n|\r)/gm, '\n')
+        : ''
+
+      if (power.isBeneficial) power.tags.push('Beneficial')
+      if (power.isBuff) power.tags.push('Buff')
+      if (power.isGroupPower) power.tags.push('Group')
+      if (power.isHeal) power.tags.push('Heal')
+
+      if (power.name && power.name.length > 0) {
+        rowData.push({
+          id: power.id,
+          icon: `https://cdn.malekai.org/power/${power.icon}`,
+          url: `https://malekai.org/powers/${power.id}`,
+          name: power.name,
+          description: power.description,
+          shortDescription: power.shortDescription,
+          type: {
+            beneficial: power.isBeneficial,
+            buff: power.isBuff,
+            group: power.isGroupPower,
+            heal: power.isHeal
+          },
+          stats: power.stats,
+          chain: {
+            prev: power.lastChain,
+            next: power.nextChain
+          },
+          tags: power.tags
+        })
       }
-      return iconList.join('')
     }
 
     return {
-      crowfallArticles: articlesData.data.results,
-      disciplineData: disciplineData.data.results,
-      dCols: [
+      search: '',
+      dataCols: [
         {
-          headerName: '',
-          field: 'icon',
+          text: '',
+          value: 'icon',
           sortable: false,
-          headerClass: 'text-left mr-3 p-4', //tdClass: 'text-center pb-6 pt-2 mr-3 align-top',
-          width: '50'
+          filterable: false,
+          align: 'center',
+          class: 'text-gray-700 text-sm align-text-top w-16'
         },
         {
-          headerName: 'Discipline',
-          field: 'name',
+          text: 'Power',
+          value: 'name',
           sortable: true,
-          headerClass: 'p-4 text-center w-2/5' //tdClass: 'px-2 align-top w-2/5 pb-6'
+          filterable: true,
+          align: 'start',
+          class: 'text-gray-700 text-sm align-text-top'
         },
         {
-          headerName: 'Powers',
-          field: 'powers',
-          sortable: true,
-          headerClass: 'text-center p-4' //tdClass: 'align-top text-center pb-6'
+          text: '',
+          value: 'stats.cast_time',
+          sortable: false,
+          filterable: true,
+          align: 'start',
+          class: 'w-0 m-0'
         },
         {
-          headerName: 'Type',
-          field: 'type',
-          sortable: true,
-          headerClass: 'mx-auto text-center p-4' //tdClass: 'align-top text-center pb-6'
+          text: '',
+          value: 'description',
+          sortable: false,
+          filterable: true,
+          align: 'start',
+          class: 'w-0 m-0'
         }
       ],
-      dRows: dRows
+      dataRows: rowData
     }
   },
   head: {
-    title: 'Welcome'
+    title: 'Crowfall Powers'
   }
 }
 </script>

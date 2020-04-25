@@ -118,7 +118,12 @@
         </div>
         <div class="container mx-auto px-4 md:px-2">
           <div class="flex flex-wrap">
+            <p v-if="$fetchState.pending">Retrieving Articles...</p>
+            <p v-else-if="$fetchState.error">
+              Error Retrieving Articles: {{ $fetchState.error.message }}
+            </p>
             <footer-article
+              v-else
               v-for="article in articles"
               :key="article.id"
               :article-link="article.url"
@@ -161,14 +166,25 @@
 import FooterArticle from './FooterArticle'
 
 export default {
+  data() {
+    return {
+      articles: []
+    }
+  },
+  activated() {
+    if (this.$fetchState.timestamp <= Date.now() - 60000) {
+      this.$fetch()
+    }
+  },
+  fetchOnServer: false,
   components: {
     FooterArticle
   },
-  props: {
-    articles: {
-      type: Array,
-      default: () => []
-    }
+  async fetch() {
+    const articlesData = await this.$axios.get(
+      'https://api.malekai.org/news?limit=3'
+    )
+    this.articles = articlesData.data.results
   }
 }
 </script>

@@ -70,6 +70,12 @@
                       >{{ stat.name }}</span
                     >
                     <span
+                      v-if="stat.value.search('%') != -1"
+                      class="inline text-red-700 font-bold text-sm"
+                    >
+                      {{ stat.value }}
+                    </span>
+                    <span
                       v-if="stat.value > 0"
                       class="inline text-red-700 font-bold text-sm"
                       >+{{ stat.value }}</span
@@ -238,7 +244,7 @@
         <!--Patchnotes Section -->
       </div>
     </div>
-    <MalekaiFooter :articles="crowfallArticles" />
+    <MalekaiFooter />
   </div>
 </template>
 
@@ -253,13 +259,6 @@ export default {
   },
   async asyncData({ app, params, error }) {
     //${params.id}
-    // official crowfall articles, used in footer
-    const articlesData = await app.$axios.get(
-      'https://api.malekai.org/news?limit=3'
-    )
-    if (!articlesData)
-      error({ statusCode: 404, message: 'articlesData: API Error' })
-
     // malekai generated changelog entries, used in'project malekai changelog'
     const disciplineData = await app.$axios.get(
       `https://api.malekai.org/disciplines/${params.id}`
@@ -318,7 +317,6 @@ export default {
 
     return {
       search: '',
-      crowfallArticles: articlesData.data.results,
       disciplineData: discipline,
       clCols: [
         {

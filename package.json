@@ -17,11 +17,11 @@
     "@nuxtjs/axios": "^5.9.7",
     "@nuxtjs/google-analytics": "^2.2.3",
     "nuxt": "^2.12.2",
-    "@nuxtjs/vuetify": "^1.11.0",
     "core-js": "^2.0.0",
     "@nuxtjs/tailwindcss": "^1.0.0"
   },
   "devDependencies": {
+    "@nuxtjs/vuetify": "^1.11.0",
     "@teamnovu/nuxt-breaky": "^1.2.1",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",

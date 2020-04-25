@@ -274,7 +274,7 @@
         <!--End 1/2 Section -->
       </div>
     </div>
-    <MalekaiFooter :articles="crowfallArticles" />
+    <MalekaiFooter />
   </div>
 </template>
 
@@ -288,13 +288,6 @@ export default {
     MalekaiHeader
   },
   async asyncData({ app, error }) {
-    // official crowfall articles, used in footer
-    const articlesData = await app.$axios.get(
-      'https://api.malekai.org/news?limit=3'
-    )
-    if (!articlesData)
-      error({ statusCode: 404, message: 'articlesData: API Error' })
-
     // official red post feed, used in 'red post tracker'
     const redData = await app.$axios.get('https://api.malekai.org/red?limit=7')
     if (!redData) error({ statusCode: 404, message: 'redData: API Error' })
@@ -346,7 +339,6 @@ export default {
     }
 
     return {
-      crowfallArticles: articlesData.data.results,
       projectMalekai: malekaiData.data,
       crowfallVersion: dataVersion.data,
       rpCols: [
