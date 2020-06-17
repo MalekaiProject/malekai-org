@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+const axios = require('axios')
 
 module.exports = {
   mode: 'universal',
@@ -53,7 +54,7 @@ module.exports = {
   ],
   loading: { color: '#000' },
   css: ['@/assets/css/tailwind.css'],
-  modules: ['@nuxtjs/axios', '@nuxtjs/google-analytics'],
+  modules: ['@nuxtjs/axios', '@nuxtjs/google-analytics', '@nuxtjs/sitemap'],
   axios: {},
   googleAnalytics: {
     id: 'UA-111445866-2'
@@ -61,7 +62,36 @@ module.exports = {
   tailwindcss: {
     exposeConfig: true
   },
-  vuetify: {
-    optionsPath: './vuetify.options.js'
+  vuetify: {},
+  sitemap: {
+    path: '/sitemap.xml',
+    gzip: true,
+    sitemaps: [
+      { path: '/sitemap-static.xml', gzip: true },
+      {
+        path: '/sitemap-disciplines.xml',
+        gzip: true,
+        exclude: ['/**'],
+        routes: async () => {
+          const disciplines = await axios.get(
+            'https://api.malekai.org/disciplines?all=yes'
+          )
+          return disciplines.data.results.map(
+            discipline => `/disciplines/${discipline.id}`
+          )
+        }
+      },
+      {
+        path: '/sitemap-powers.xml',
+        gzip: true,
+        exclude: ['/**'],
+        routes: async () => {
+          const powers = await axios.get(
+            'https://api.malekai.org/powers?all=yes'
+          )
+          return powers.data.results.map(power => `/powers/${power.id}`)
+        }
+      }
+    ]
   }
 }
