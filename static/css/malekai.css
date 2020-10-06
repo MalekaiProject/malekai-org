@@ -31,7 +31,17 @@
 .theme--light.v-input,
 .theme--light.v-input input,
 .theme--light.v-input textarea {
-  color: inherit !important;
+  color: white !important;
+}
+
+.theme--light.v-input label {
+  padding-left: 10px;
+}
+
+.theme--light.v-input input {
+  background-color: rgba(255, 255, 255, 0.3)!important;
+  border-radius: 10px;
+  padding-left: 10px;
 }
 
 .theme--light.v-icon,
