@@ -169,7 +169,8 @@
                   </span>
 
                   <!-- Chained Powers -->
-                  <div id="chained-powers" class="w-full">
+                  <div id="chained-powers" class="w-full"
+                       v-if="(powerData.chain.next && powerData.chain.next.length > 0) || (powerData.chain.prev && powerData.chain.prev.length > 0)">
                     <h2 class="text-sm font-bold text-gray-700 tracking-wider mb-1">
                       Chained Powers
                     </h2>
