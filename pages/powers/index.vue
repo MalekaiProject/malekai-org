@@ -48,10 +48,13 @@
                         </nuxt-link>
                       </td>
                       <td class="p-1 align-text-top">
-                        <span class="block font-medium mb-2">{{
-                          item.name
-                        }}</span>
+                        <nuxt-link :to="`/powers/${item.id}`">
+                        <span class="block font-medium mb-2">
+                            {{ item.name }}
+                        </span>
+
                         <span class="block flex flex-wrap justify-start mb-2">
+
                           <span
                             v-if="item.stats.cast_time"
                             class="italic text-xs mr-3 md:mr-5"
@@ -183,6 +186,7 @@
                         >
                           {{ item.name }} {{ item.description }}
                         </span>
+                        </nuxt-link>
                       </td>
                       <td class="w-0 m-0 p-0"></td>
                       <td class="w-0 m-0 p-0"></td>
