@@ -49,143 +49,144 @@
                       </td>
                       <td class="p-1 align-text-top">
                         <nuxt-link :to="`/powers/${item.id}`">
-                        <span class="block font-medium mb-2">
+                          <span class="block font-medium mb-2">
                             {{ item.name }}
-                        </span>
-
-                        <span class="block flex flex-wrap justify-start mb-2">
-
-                          <span
-                            v-if="item.stats.cast_time"
-                            class="italic text-xs mr-3 md:mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-casttime.png"
-                              class="h-4 inline -mt-1"
-                              alt="Cast Time"
-                            />
-                            {{ item.stats.cast_time }}
-                          </span>
-                          <span
-                            v-if="item.stats.cooldown"
-                            class="italic text-xs mr-3 md:mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-cooldown.png"
-                              class="h-4 inline -mt-1"
-                              alt="Cooldown"
-                            />
-                            {{ item.stats.cooldown }}
                           </span>
 
-                          <span
-                            v-if="item.stats.duration"
-                            class="italic text-xs mr-3 md:mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-duration.png"
-                              class="h-4 inline -mt-1"
-                              alt="Duration"
-                            />
-                            {{ item.stats.duration }}
+                          <span class="block flex flex-wrap justify-start mb-2">
+                            <span
+                              v-if="item.stats.cast_time"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-casttime.png"
+                                class="h-4 inline -mt-1"
+                                alt="Cast Time"
+                              />
+                              {{ item.stats.cast_time }}
+                            </span>
+                            <span
+                              v-if="item.stats.cooldown"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-cooldown.png"
+                                class="h-4 inline -mt-1"
+                                alt="Cooldown"
+                              />
+                              {{ item.stats.cooldown }}
+                            </span>
+
+                            <span
+                              v-if="item.stats.duration"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-duration.png"
+                                class="h-4 inline -mt-1"
+                                alt="Duration"
+                              />
+                              {{ item.stats.duration }}
+                            </span>
+                            <span
+                              v-if="item.stats.target"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-targetingtype.png"
+                                class="h-4 inline -mt-1"
+                                alt="Targeting Type"
+                              />
+                              {{ item.stats.target }}
+                            </span>
+                            <span
+                              v-if="item.stats.max_targets"
+                              class="italic text-xs mr-3 md:mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-maxtargets.png"
+                                class="h-4 inline -mt-1"
+                                alt="Max Targets"
+                              />
+                              {{ item.stats.max_targets }}
+                            </span>
+                            <span
+                              v-if="item.stats.range"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-range.png"
+                                class="h-4 inline -mt-1"
+                                alt="Range"
+                              />
+                              {{ item.stats.range }}
+                            </span>
+                            <span
+                              v-if="item.stats.lifetime && item.stats.velocity"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-range.png"
+                                class="h-4 inline -mt-1"
+                                alt="Range"
+                              />
+                              {{
+                                item.stats.lifetime *
+                                  parseInt(item.stats.velocity)
+                              }}
+                            </span>
+                            <span
+                              v-if="item.stats.restore"
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-restore.png"
+                                class="h-4 inline -mt-1"
+                                alt="Restore"
+                              />
+                              {{ item.stats.restore }}
+                              {{ item.stats.restore_type }}
+                              {{ item.stats.restore_type_time }}
+                            </span>
+                            <span
+                              v-if="
+                                item.stats.buff_type_1 &&
+                                  item.stats.buff_amount_1
+                              "
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-buff.png"
+                                class="h-4 inline -mt-1"
+                                alt="Buff"
+                              />
+                              {{ item.stats.buff_type_1 }}:
+                              <span v-if="item.stats.buff_amount_1 > 0">+</span
+                              >{{ item.stats.buff_amount_1 }}
+                            </span>
+                            <span
+                              v-if="
+                                item.stats.buff_type_2 &&
+                                  item.stats.buff_amount_2
+                              "
+                              class="italic text-xs mr-3 md: mr-5"
+                            >
+                              <img
+                                src="/images/ui/power-buff.png"
+                                class="h-4 inline -mt-1"
+                                alt="Buff 2"
+                              />
+                              {{ item.stats.buff_type_2 }}:
+                              <span v-if="item.stats.buff_amount_2 > 0">+</span
+                              >{{ item.stats.buff_amount_2 }}
+                            </span>
                           </span>
                           <span
-                            v-if="item.stats.target"
-                            class="italic text-xs mr-3 md: mr-5"
+                            v-if="item.description"
+                            class="block italic text-xs mb-1"
                           >
-                            <img
-                              src="/images/ui/power-targetingtype.png"
-                              class="h-4 inline -mt-1"
-                              alt="Targeting Type"
-                            />
-                            {{ item.stats.target }}
+                            {{ item.name }} {{ item.description }}
                           </span>
-                          <span
-                            v-if="item.stats.max_targets"
-                            class="italic text-xs mr-3 md:mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-maxtargets.png"
-                              class="h-4 inline -mt-1"
-                              alt="Max Targets"
-                            />
-                            {{ item.stats.max_targets }}
-                          </span>
-                          <span
-                            v-if="item.stats.range"
-                            class="italic text-xs mr-3 md: mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-range.png"
-                              class="h-4 inline -mt-1"
-                              alt="Range"
-                            />
-                            {{ item.stats.range }}
-                          </span>
-                          <span
-                            v-if="item.stats.lifetime && item.stats.velocity"
-                            class="italic text-xs mr-3 md: mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-range.png"
-                              class="h-4 inline -mt-1"
-                              alt="Range"
-                            />
-                            {{
-                              item.stats.lifetime *
-                                parseInt(item.stats.velocity)
-                            }}
-                          </span>
-                          <span
-                            v-if="item.stats.restore"
-                            class="italic text-xs mr-3 md: mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-restore.png"
-                              class="h-4 inline -mt-1"
-                              alt="Restore"
-                            />
-                            {{ item.stats.restore }}
-                            {{ item.stats.restore_type }}
-                            {{ item.stats.restore_type_time }}
-                          </span>
-                          <span
-                            v-if="
-                              item.stats.buff_type_1 && item.stats.buff_amount_1
-                            "
-                            class="italic text-xs mr-3 md: mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-buff.png"
-                              class="h-4 inline -mt-1"
-                              alt="Buff"
-                            />
-                            {{ item.stats.buff_type_1 }}:
-                            <span v-if="item.stats.buff_amount_1 > 0">+</span
-                            >{{ item.stats.buff_amount_1 }}
-                          </span>
-                          <span
-                            v-if="
-                              item.stats.buff_type_2 && item.stats.buff_amount_2
-                            "
-                            class="italic text-xs mr-3 md: mr-5"
-                          >
-                            <img
-                              src="/images/ui/power-buff.png"
-                              class="h-4 inline -mt-1"
-                              alt="Buff 2"
-                            />
-                            {{ item.stats.buff_type_2 }}:
-                            <span v-if="item.stats.buff_amount_2 > 0">+</span
-                            >{{ item.stats.buff_amount_2 }}
-                          </span>
-                        </span>
-                        <span
-                          v-if="item.description"
-                          class="block italic text-xs mb-1"
-                        >
-                          {{ item.name }} {{ item.description }}
-                        </span>
                         </nuxt-link>
                       </td>
                       <td class="w-0 m-0 p-0"></td>
@@ -207,23 +208,40 @@
 <script>
 import { MalekaiHeader } from '@/components/MalekaiHeader'
 import { MalekaiFooter } from '@/components/MalekaiFooter'
+import gql from 'graphql-tag'
+import axios from 'axios'
 
 export default {
   components: {
     MalekaiFooter,
     MalekaiHeader
   },
-  async asyncData({ app, error }) {
+  async asyncData({ app, error, context }) {
     // malekai generated changelog entries, used in'project malekai changelog'
-    const powerData = await app.$axios.get(
-      'https://api.malekai.org/powers?all=yes'
-    )
+    let client = app.apolloProvider.defaultClient
+    const powerData = await client.query({
+      query: gql`
+        query getPowers {
+          allPowers {
+            id
+            name
+            description
+            shortDescription
+            icon
+            stats
+            nextChain
+            lastChain
+          }
+        }
+      `
+    })
+
     if (!powerData) error({ statusCode: 404, message: 'powerData: API Error' })
 
     // used to construct changelog table
     const rowData = []
 
-    for (const power of powerData.data.results) {
+    for (const power of powerData.data.allPowers) {
       power.description = power.description
         ? power.description.replace(/(\r\n|\\n|\r)/gm, '\n')
         : ''

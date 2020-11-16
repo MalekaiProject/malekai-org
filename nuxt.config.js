@@ -1,6 +1,8 @@
 import colors from 'vuetify/es5/util/colors'
 const axios = require('axios')
 
+import { API_SERVER } from './constants';
+
 module.exports = {
   mode: 'universal',
   server: {
@@ -54,8 +56,15 @@ module.exports = {
   ],
   loading: { color: '#000' },
   css: ['@/assets/css/tailwind.css'],
-  modules: ['@nuxtjs/axios', '@nuxtjs/google-analytics', '@nuxtjs/sitemap'],
+  modules: ['@nuxtjs/apollo', '@nuxtjs/axios', '@nuxtjs/google-analytics', '@nuxtjs/sitemap'],
   axios: {},
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: API_SERVER,
+      }
+    }
+  },
   googleAnalytics: {
     id: 'UA-111445866-2'
   },
@@ -73,10 +82,28 @@ module.exports = {
         gzip: true,
         exclude: ['/**'],
         routes: async () => {
-          const disciplines = await axios.get(
-            'https://api.malekai.org/disciplines?all=yes'
-          )
-          return disciplines.data.results.map(
+         
+        const disciplines = await axios.get(
+          'http://crow.gg',
+          {
+            params: {
+              query: ` query getDisciplines {
+              allDisciplines {
+                id
+              }
+            }
+          `
+            }
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+
+          
+          return disciplines.data.data.allDisciplines.map(
             discipline => `/disciplines/${discipline.id}`
           )
         }
@@ -87,9 +114,24 @@ module.exports = {
         exclude: ['/**'],
         routes: async () => {
           const powers = await axios.get(
-            'https://api.malekai.org/powers?all=yes'
-          )
-          return powers.data.results.map(power => `/powers/${power.id}`)
+          'http://crow.gg',
+          {
+            params: {
+              query: ` query getPowers {
+              allPowers {
+                id
+              }
+            }
+          `
+            }
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        )
+          return powers.data.data.allPowers.map(power => `/powers/${power.id}`)
         }
       }
     ]
