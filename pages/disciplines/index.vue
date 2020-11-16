@@ -113,6 +113,7 @@
 <script>
 import { MalekaiHeader } from '@/components/MalekaiHeader'
 import { MalekaiFooter } from '@/components/MalekaiFooter'
+import gql from 'graphql-tag'
 
 export default {
   components: {
@@ -121,16 +122,34 @@ export default {
   },
   async asyncData({ app, error }) {
     // malekai generated changelog entries, used in'project malekai changelog'
-    const disciplineData = await app.$axios.get(
-      'https://api.malekai.org/disciplines?all=yes'
-    )
+    let client = app.apolloProvider.defaultClient
+    const disciplineData = await client.query({
+      query: gql`
+        query getDisciplines {
+          allDisciplines {
+            id
+            name
+            type
+            trait
+            icon
+            stats
+            grantsPowers
+            grantsSlot
+            grantsTrait
+            description
+            lore
+          }
+        }
+      `
+    })
+
     if (!disciplineData)
       error({ statusCode: 404, message: 'disciplineData: API Error' })
 
     // used to construct changelog table
     const rowData = []
 
-    for (const discipline of disciplineData.data.results) {
+    for (const discipline of disciplineData.data.allDisciplines) {
       discipline.trait.forEach(trait => {
         trait.link = trait.name
           ? trait.name

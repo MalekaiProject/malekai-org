@@ -14,11 +14,13 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "@nuxtjs/apollo": "^4.0.1-rc.5",
     "@nuxtjs/axios": "^5.9.7",
     "@nuxtjs/google-analytics": "^2.2.3",
     "@nuxtjs/sitemap": "^2.2.1",
     "@nuxtjs/tailwindcss": "^1.0.0",
     "core-js": "^2.0.0",
+    "graphql-tag": "^2.11.0",
     "nuxt": "^2.12.2"
   },
   "devDependencies": {

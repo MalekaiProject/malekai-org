@@ -123,13 +123,15 @@
                             >{{ power.name }}</span
                           >
                           <span class="block font-normal text-xs italic">{{
-                              power.shortDescription
+                            power.shortDescription
                           }}</span>
                         </nuxt-link>
 
                         <!-- Power Details -->
                         <div class="mt-2 mr-3 align-text-top block clear-both">
-                          <span class="block flex flex-wrap justify-start mb-1 ">
+                          <span
+                            class="block flex flex-wrap justify-start mb-1 "
+                          >
                             <span
                               v-if="power.stats.cast_time"
                               class="italic text-xs mt-1 mr-3 md:mr-5"
@@ -210,7 +212,7 @@
                               />
                               {{
                                 power.stats.lifetime *
-                                parseInt(power.stats.velocity)
+                                  parseInt(power.stats.velocity)
                               }}
                             </span>
                             <span
@@ -395,6 +397,7 @@
 <script>
 import { MalekaiHeader } from '@/components/MalekaiHeader'
 import { MalekaiFooter } from '@/components/MalekaiFooter'
+import gql from 'graphql-tag'
 
 export default {
   components: {
@@ -404,19 +407,31 @@ export default {
   async asyncData({ app, params, error }) {
     //${params.id}
     // malekai generated changelog entries, used in'project malekai changelog'
-    const disciplineData = await app.$axios.get(
-      `https://api.malekai.org/disciplines/${params.id}`
-    )
+    let client = app.apolloProvider.defaultClient
+    const disciplineData = await client.query({
+      query: gql`
+        query getDiscipline {
+          Discipline(id: "${params.id}") {
+            id
+            name
+            type
+            trait
+            icon
+            stats
+            grantsPowers
+            grantsSlot
+            grantsTrait
+            description
+            lore
+          }
+        }
+      `
+    })
+
     if (!disciplineData)
       error({ statusCode: 404, message: 'disciplineData: API Error' })
 
-    const patchnotesData = await app.$axios.get(
-      `https://api.malekai.org/changelog/discipline/${params.id}`
-    )
-    if (!patchnotesData)
-      error({ statusCode: 404, message: 'patchnotesData: API Error' })
-
-    let disciplineResults = disciplineData.data.results[0]
+    let disciplineResults = disciplineData.data.Discipline
     disciplineResults.description = disciplineResults.description
       ? disciplineResults.description.replace(/(\r\n|\\n|\r)/gm, '\n')
       : ''
@@ -432,15 +447,37 @@ export default {
         : ''
     })
 
-    let powerData = await Promise.all(disciplineResults.grantsPowers.map(power => app.$axios.get(
-      `https://api.malekai.org/powers/${power.id}`
-    )))
+    let powerData = await Promise.all(
+      disciplineResults.grantsPowers.map(power =>
+        client.query({
+          query: gql`
+            query getPower {
+              Power(id: "${power.id}") {
+                id
+                name
+                description
+                shortDescription
+                icon
+                stats
+                nextChain
+                lastChain
+              }
+            }
+          `
+        })
+      )
+    )
 
-    disciplineResults.powerDetails = powerData.flatMap(result => result.data.results)
+    disciplineResults.powerDetails = powerData.flatMap(
+      result => result.data.Power
+    )
 
-    disciplineResults.powerDetails.forEach(power => power.description = power.description
-      ? power.description.replace(/(\r\n|\\n|\r)/gm, '\n')
-      : '')
+    disciplineResults.powerDetails.forEach(
+      power =>
+        (power.description = power.description
+          ? power.description.replace(/(\r\n|\\n|\r)/gm, '\n')
+          : '')
+    )
 
     let typeLink = `/disciplines/${disciplineResults.type}/`
 
@@ -461,16 +498,6 @@ export default {
       lore: disciplineResults.lore
     }
 
-    // used to construct changelog table
-    const clRows = []
-    for (const note of patchnotesData.data.results) {
-      clRows.push({
-        id: note.id,
-        patch: note.change,
-        date: note.changedate
-      })
-    }
-
     return {
       search: '',
       disciplineData: discipline,
@@ -483,7 +510,7 @@ export default {
           class: 'text-gray-700 text-sm'
         }
       ],
-      clRows: clRows
+      clRows: []
     }
   },
   head() {
