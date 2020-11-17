@@ -4,7 +4,6 @@ const axios = require('axios')
 import { API_SERVER } from './constants';
 
 module.exports = {
-  mode: 'universal',
   server: {
     port: 5500,
     host: '0.0.0.0'
