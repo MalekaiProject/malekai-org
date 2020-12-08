@@ -164,8 +164,8 @@ export default {
 
       rowData.push({
         id: discipline.id,
-        icon: `https://cdn.malekai.org/discipline/${discipline.icon}`,
-        url: `https://malekai.org/disciplines/${discipline.id}`,
+        icon: `./crowfall-images/images/disciplines/${discipline.icon}`,
+        url: `./disciplines/${discipline.id}`,
         name: discipline.name,
         description: discipline.description,
         grantsPowers: discipline.grantsPowers,

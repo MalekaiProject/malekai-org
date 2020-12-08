@@ -1,0 +1,3 @@
+[submodule "static/crowfall-images"]
+	path = static/crowfall-images
+	url = https://github.com/MalekaiProject/crowfall-images.git

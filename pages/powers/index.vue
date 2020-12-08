@@ -254,8 +254,8 @@ export default {
       if (power.name && power.name.length > 0) {
         rowData.push({
           id: power.id,
-          icon: `https://cdn.malekai.org/power/${power.icon}`,
-          url: `https://malekai.org/powers/${power.id}`,
+          icon: `./crowfall-images/images/powers/${power.icon}`,
+          url: `./powers/${power.id}`,
           name: power.name,
           description: power.description,
           shortDescription: power.shortDescription,
