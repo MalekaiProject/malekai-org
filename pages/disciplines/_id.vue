@@ -483,7 +483,7 @@ export default {
 
     let discipline = {
       id: disciplineResults.id,
-      icon: `https://cdn.malekai.org/discipline/${disciplineResults.icon}`,
+      icon: `./crowfall-images/images/discipline/${disciplineResults.icon}`,
       name: disciplineResults.name,
       description: disciplineResults.description,
       grantsPowers: disciplineResults.grantsPowers,

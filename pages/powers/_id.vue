@@ -650,8 +650,8 @@ export default {
     if (powerData.isHeal) powerData.tags.push('Heal')
     let power = {
       id: powerData.id,
-      icon: `https://cdn.malekai.org/power/${powerData.icon}`,
-      url: `https://malekai.org/powers/${powerData.id}`,
+      icon: `./crowfall-images/images/powers/${powerData.icon}`,
+      url: `./powers/${powerData.id}`,
       name: powerData.name,
       description: powerData.description,
       shortDescription: powerData.shortDescription,
